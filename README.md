@@ -8,17 +8,17 @@ These were originally assembled using Devpac3, that still works for me in the em
 
 Some of the effects:
 
-![Barrel Zoom](barrelzoom.png)
-
-![Box Zoom](boxzoom.png)
-
 ![Fractal Zoom Polys](fraczoom.png)
-
-![Cracktro](cracktro.png)
 
 ![Warper](warp.png)
 
 ![Credits Rotator](credits.png)
+
+![Cracktro](cracktro.png)
+
+![Box Zoom](boxzoom.png)
+
+![Barrel Zoom](barrelzoom.png)
 
 
 
