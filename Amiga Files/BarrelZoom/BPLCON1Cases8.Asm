@@ -1,0 +1,323 @@
+	;Case statement for which set of BPLCON1 moves to add at a line.
+	;
+	;Call: 	BPLCON1CaseT	If    0 < (lines Y pos) < 128
+	;Call:	BPLCON1CaseB	If  127 < (lines Y pos) < 256
+	;Call:	BPLCON1CaseT	If  255 < (lines Y pos) < 300
+	;
+	;Uses d2,a0-a1
+	;---------------------------------------------------------------
+	;PRE : d2 = Width value, a0 -> CustomCop
+
+
+SSMOVE	Macro
+	;Inserts a Bplcon1 Move into the copper list.
+	;--------------------------------------------
+	Move.l	#BPLCON1<<16+($11*\1),(a0)+
+	EndM
+
+XWAITT	Macro
+	;Insert a Copper Wait for a horizontal position.
+	;For Y positions < 128
+	;-----------------------------------------------
+	;PRE: \1 MUST be even
+	Move.l	#($0000+(\1+61))<<16+$80fe,(a0)+
+	EndM
+
+XWAITB	Macro
+	;Insert a Copper Wait for a horizontal position.
+	;For Y positions > 127
+	;-----------------------------------------------
+	;PRE: \1 MUST be even
+	Move.l	#($8000+(\1+61))<<16+$80fe,(a0)+
+	EndM
+
+
+	;--------------------------------------------------------------------------------------
+
+	
+BPLCON1CaseT	And.l	#7,d2
+	Lea	.LineCaseTable,a1
+	MoveA.l	(a1,d2.l*4),a1
+	Jmp	(a1)
+
+.LineCaseTable	Dc.l	.Case00,.Case01,.Case02,.Case03,.Case04,.Case05,.Case06,.Case07
+	
+.Case00	SSMOVE	8
+	Bra	.CaseEnd
+	
+.Case01	SSMOVE	9
+	XWAITT	52
+	SSMOVE	8
+	XWAITT	106
+	SSMOVE	7
+	Bra	.CaseEnd
+	
+.Case02	SSMOVE	10
+	XWAITT	32
+	SSMOVE	9
+	XWAITT	64
+	SSMOVE	8
+	XWAITT	96
+	SSMOVE	7
+	XWAITT	128
+	SSMOVE	6
+	Bra	.CaseEnd
+	
+.Case03	SSMOVE	11
+	XWAITT	22
+	SSMOVE	10
+	XWAITT	44
+	SSMOVE	9
+	XWAITT	68
+	SSMOVE	8
+	XWAITT	92
+	SSMOVE	7
+	XWAITT	114
+	SSMOVE	6
+	XWAITT	136
+	SSMOVE	5
+	Bra	.CaseEnd
+	
+.Case04	SSMOVE	12
+	XWAITT	18
+	SSMOVE	11
+	XWAITT	34
+	SSMOVE	10
+	XWAITT	56
+	SSMOVE	9
+	XWAITT	70
+	SSMOVE	8
+	XWAITT	88
+	SSMOVE	7
+	XWAITT	106
+	SSMOVE	6
+	XWAITT	122
+	SSMOVE	5
+	XWAITT	142
+	SSMOVE	4
+	Bra	.CaseEnd
+	
+.Case05	SSMOVE	13
+	XWAITT	14
+	SSMOVE	12
+	XWAITT	28
+	SSMOVE	11
+	XWAITT	44
+	SSMOVE	10
+	XWAITT	58
+	SSMOVE	9
+	XWAITT	72
+	SSMOVE	8
+	XWAITT	88
+	SSMOVE	7
+	XWAITT	102
+	SSMOVE	6
+	XWAITT	114
+	SSMOVE	5
+	XWAITT	130
+	SSMOVE	4
+	XWAITT	146
+	SSMOVE	3
+	Bra	.CaseEnd
+	
+.Case06	SSMOVE	14
+	XWAITT	14
+	SSMOVE	13
+	XWAITT	26
+	SSMOVE	12
+	XWAITT	38
+	SSMOVE	11
+	XWAITT	50
+	SSMOVE	10
+	XWAITT	64
+	SSMOVE	9
+	XWAITT	74
+	SSMOVE	8
+	XWAITT	86
+	SSMOVE	7
+	XWAITT	98
+	SSMOVE	6
+	XWAITT	110
+	SSMOVE	5
+	XWAITT	124
+	SSMOVE	4
+	XWAITT	136
+	SSMOVE	3
+	XWAITT	148
+	SSMOVE	2
+	Bra	.CaseEnd
+	
+.Case07	SSMOVE	15
+	XWAITT	14
+	SSMOVE	14
+	XWAITT	26
+	SSMOVE	13
+	XWAITT	38
+	SSMOVE	11
+	XWAITT	50
+	SSMOVE	10
+	XWAITT	64
+	SSMOVE	9
+	XWAITT	74
+	SSMOVE	8
+	XWAITT	86
+	SSMOVE	7
+	XWAITT	98
+	SSMOVE	6
+	XWAITT	110
+	SSMOVE	4
+	XWAITT	124
+	SSMOVE	3
+	XWAITT	136
+	SSMOVE	2
+	XWAITT	148
+	SSMOVE	1
+
+.CaseEnd	
+	Rts
+	
+
+	;--------------------------------------------------------------------------------------
+
+
+BPLCON1CaseB	And.l	#7,d2
+	Lea	.LineCaseTable,a1
+	MoveA.l	(a1,d2.l*4),a1
+	Jmp	(a1)	
+	
+.LineCaseTable	Dc.l	.Case00,.Case01,.Case02,.Case03,.Case04,.Case05,.Case06,.Case07
+		
+.Case00	SSMOVE	8
+	Bra	.CaseEnd
+	
+.Case01	SSMOVE	9
+	XWAITB	52
+	SSMOVE	8
+	XWAITB	106
+	SSMOVE	7
+	Bra	.CaseEnd
+	
+.Case02	SSMOVE	10
+	XWAITB	32
+	SSMOVE	9
+	XWAITB	64
+	SSMOVE	8
+	XWAITB	96
+	SSMOVE	7
+	XWAITB	128
+	SSMOVE	6
+	Bra	.CaseEnd
+	
+.Case03	SSMOVE	11
+	XWAITB	22
+	SSMOVE	10
+	XWAITB	44
+	SSMOVE	9
+	XWAITB	68
+	SSMOVE	8
+	XWAITB	92
+	SSMOVE	7
+	XWAITB	114
+	SSMOVE	6
+	XWAITB	136
+	SSMOVE	5
+	Bra	.CaseEnd
+	
+.Case04	SSMOVE	12
+	XWAITB	18
+	SSMOVE	11
+	XWAITB	34
+	SSMOVE	10
+	XWAITB	56
+	SSMOVE	9
+	XWAITB	70
+	SSMOVE	8
+	XWAITB	88
+	SSMOVE	7
+	XWAITB	106
+	SSMOVE	6
+	XWAITB	122
+	SSMOVE	5
+	XWAITB	142
+	SSMOVE	4
+	Bra	.CaseEnd
+	
+.Case05	SSMOVE	13
+	XWAITB	14
+	SSMOVE	12
+	XWAITB	28
+	SSMOVE	11
+	XWAITB	44
+	SSMOVE	10
+	XWAITB	58
+	SSMOVE	9
+	XWAITB	72
+	SSMOVE	8
+	XWAITB	88
+	SSMOVE	7
+	XWAITB	102
+	SSMOVE	6
+	XWAITB	114
+	SSMOVE	5
+	XWAITB	130
+	SSMOVE	4
+	XWAITB	146
+	SSMOVE	3
+	Bra	.CaseEnd
+	
+.Case06	SSMOVE	14
+	XWAITB	14
+	SSMOVE	13
+	XWAITB	26
+	SSMOVE	12
+	XWAITB	38
+	SSMOVE	11
+	XWAITB	50
+	SSMOVE	10
+	XWAITB	64
+	SSMOVE	9
+	XWAITB	74
+	SSMOVE	8
+	XWAITB	86
+	SSMOVE	7
+	XWAITB	98
+	SSMOVE	6
+	XWAITB	110
+	SSMOVE	5
+	XWAITB	124
+	SSMOVE	4
+	XWAITB	136
+	SSMOVE	3
+	XWAITB	148
+	SSMOVE	2
+	Bra	.CaseEnd
+	
+.Case07	SSMOVE	15
+	XWAITB	14
+	SSMOVE	14
+	XWAITB	26
+	SSMOVE	13
+	XWAITB	38
+	SSMOVE	11
+	XWAITB	50
+	SSMOVE	10
+	XWAITB	64
+	SSMOVE	9
+	XWAITB	74
+	SSMOVE	8
+	XWAITB	86
+	SSMOVE	7
+	XWAITB	98
+	SSMOVE	6
+	XWAITB	110
+	SSMOVE	4
+	XWAITB	124
+	SSMOVE	3
+	XWAITB	136
+	SSMOVE	2
+	XWAITB	148
+	SSMOVE	1
+	Bra	.CaseEnd
+
+.CaseEnd	
+	Rts
